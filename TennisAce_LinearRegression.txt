@@ -1,0 +1,94 @@
+import codecademylib3_seaborn
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+
+# load and investigate the data here:
+
+df = pd.read_csv('tennis_stats.csv')
+print(df.head())
+
+# perform exploratory analysis here:
+plt.scatter(df['Aces'], df['Winnings'], alpha=0.4)
+plt.title('Aces vs Winnings')
+plt.xlabel('Aces')
+plt.ylabel('Winnings')
+
+
+plt.scatter(df['BreakPointsOpportunities'], df['Winnings'], alpha=0.4)
+plt.title('BreakPointsOpportunities vs Winnings')
+plt.xlabel('BreakPointsOpportunities')
+plt.ylabel('Winnings')
+
+# perform single feature linear regressions here:
+x = df['BreakPointsOpportunities']
+y = df['Winnings']
+
+x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8)
+
+# Reshape x_train to a 2D array
+x_train = x_train.values.reshape(-1, 1)
+
+model = LinearRegression()
+model.fit(x_train, y_train)
+
+model.score(x_test.values.reshape(-1, 1), y_test)
+
+predict = model.predict(x_test.values.reshape(-1, 1))
+plt.scatter(x_test, predict, alpha=0.4)
+plt.show()
+
+# another single feature regression
+x2 = df['Aces']
+y2 = df['Winnings']
+
+x2_train, x2_test, y2_train, y2_test = train_test_split(x2, y2, train_size=0.8)
+
+# Reshape x2_train to a 2D array
+x2_train = x2_train.values.reshape(-1, 1)
+
+model2 = LinearRegression()
+model2.fit(x2_train, y2_train)
+
+model2.score(x2_test.values.reshape(-1, 1), y2_test)
+
+predict2 = model2.predict(x2_test.values.reshape(-1, 1))
+plt.scatter(x2_test, predict2, alpha=0.4)
+plt.show()
+
+# perform two feature linear regressions here:
+features = df[['BreakPointsOpportunities', 'FirstServeReturnPointsWon']]
+outcome = df['Winnings']
+
+features_train, features_test, outcome_train, outcome_test = train_test_split(features, outcome, train_size=0.8)
+
+features_train = features_train.values.reshape(-1, features.shape[1])
+
+model3 = LinearRegression()
+model3.fit(features_train, outcome_train)
+
+model3.score(features_test.values.reshape(-1, features.shape[1]), outcome_test)
+
+predict3 = model3.predict(features_test.values.reshape(-1, features.shape[1]))
+
+plt.scatter(features_test['BreakPointsOpportunities'], predict3, alpha=0.4)
+plt.show()
+
+# perform multiple feature linear regressions here:
+features = df[['FirstServe', 'FirstServePointsWon', 'FirstServeReturnPointsWon','SecondServePointsWon','SecondServeReturnPointsWon','Aces','BreakPointsConverted','BreakPointsFaced','BreakPointsOpportunities','BreakPointsSaved','DoubleFaults','ReturnGamesPlayed','ReturnGamesWon','ReturnPointsWon','ServiceGamesPlayed','ServiceGamesWon','TotalPointsWon','TotalServicePointsWon']]
+outcome = df['Winnings']
+
+features_train, features_test, outcome_train, outcome_test = train_test_split(features, outcome, train_size=0.8)
+
+features_train = features_train.values.reshape(-1, features.shape[1])
+
+model4 = LinearRegression()
+model4.fit(features_train, outcome_train)
+
+model4.score(features_test.values.reshape(-1, features.shape[1]), outcome_test)
+
+predict4 = model4.predict(features_test)
+plt.scatter(features_test['BreakPointsOpportunities'], predict4, alpha=0.4)
+plt.show()
+
